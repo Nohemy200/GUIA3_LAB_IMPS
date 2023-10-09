@@ -28,6 +28,7 @@ app.use(express.urlencoded({extended: false})); // Sirve para poder aceptar dato
 app.use(require('./routes')); // Node automaticamente busca el index.js del modulo
 app.use('/estudiantes',require('./routes/estudiantes')); // Configuracion de ruta para estudiantes
 app.use('/carreras', require('./routes/carreras')); // Configuracion de ruta para carreras
+app.use('/profesores', require('./routes/profesores')); // Configuracion de ruta para profesores
 
 // Archivos publicos (aca se coloca todo el código al cual el navegador puede acceder)
 app.use(express.static(path.join(__dirname, 'public')));
