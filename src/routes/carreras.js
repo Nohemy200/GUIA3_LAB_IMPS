@@ -1,23 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../repositories/CarreraRepository');
+const { isLoggedIn } = require('../lib/auth');
 
 // Endpoint para mostrar todos los carreras
-router.get('/', async (request, response) => {
+router.get('/', isLoggedIn, async (request, response) => {
     const carreras = await queries.obtenerTodosLasCarreras();
 
      response.render('carreras/listado', {carreras: carreras}); // Mostramos el listado de carreras
 });
 
 // Endpoint que permite mostrar el formulario para agregar una nueva carrera
-router.get('/agregar', async(request, response) => {
+router.get('/agregar', isLoggedIn, async(request, response) => {
    
     // Renderizamos el formulario
     response.render('carreras/agregar');
 });
 
 // Endpoint que permite mostrar el formulario para modificar una carrera
-router.get('/modificar/:idcarrera', async(request, response) => {
+router.get('/modificar/:idcarrera', isLoggedIn, async(request, response) => {
     const {idcarrera} = request.params;
 
     // Aca es de obtener el objeto del carrera
@@ -28,7 +29,7 @@ router.get('/modificar/:idcarrera', async(request, response) => {
 
 
 // Enpoint que permite realizar la modificacion de una carrera
-router.post('/modificar/:id', async(request, response) => {
+router.post('/modificar/:id', isLoggedIn, async(request, response) => {
     const { id } = request.params;
     const { idcarrera, carrera } = request.body;
     nuevaCarrera = { idcarrera, carrera };
@@ -46,7 +47,7 @@ router.post('/modificar/:id', async(request, response) => {
 });
 
 // Endpoint para agregar una carrera
-router.post('/agregar', async(request, response) => {
+router.post('/agregar', isLoggedIn, async(request, response) => {
     const { idcarrera, carrera } = request.body;
     const nuevaCarrera = { idcarrera, carrera };
     
@@ -57,7 +58,7 @@ router.post('/agregar', async(request, response) => {
 });
 
 // Endpoint que permite eliminar una carrera
-router.get('/eliminar/:idcarrera', async(request, response) => {
+router.get('/eliminar/:idcarrera', isLoggedIn, async(request, response) => {
     // Desestructuramos el objeto que nos mandan en la peticion y extraemos el idcarrera
     const { idcarrera } = request.params;
     const resultado = await queries.eliminarCarrera(idcarrera);

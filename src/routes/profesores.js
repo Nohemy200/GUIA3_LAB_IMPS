@@ -1,23 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../repositories/ProfesorRepository');
+const { isLoggedIn } = require('../lib/auth');
+
 
 // Endpoint para mostrar todos los profesores
-router.get('/', async (request, response) => {
+router.get('/', isLoggedIn, async (request, response) => {
     const profesores = await queries.obtenerTodosLosProfesores();
     //const fecha_nacimiento = profesores.fecha_nacimiento.toISOString().split('T')[0];
      response.render('profesores/listado', {profesores:profesores}); // Mostramos el listado de profesores
 });
 
 // Endpoint que permite mostrar el formulario para agregar una nueva carrera
-router.get('/agregar', async(request, response) => {
+router.get('/agregar', isLoggedIn, async(request, response) => {
    
     // Renderizamos el formulario
     response.render('profesores/agregar');
 });
 
 // Endpoint que permite mostrar el formulario para modificar una carrera
-router.get('/modificar/:idprofesor', async(request, response) => {
+router.get('/modificar/:idprofesor', isLoggedIn, async(request, response) => {
     const {idprofesor} = request.params;
 
     // Aca es de obtener el objeto del carrera
@@ -28,7 +30,7 @@ router.get('/modificar/:idprofesor', async(request, response) => {
 
 
 // Enpoint que permite realizar la modificacion de un profesor
-router.post('/modificar/:id', async(request, response) => {
+router.post('/modificar/:id', isLoggedIn, async(request, response) => {
     const { id } = request.params;
     const { idprofesor, nombre, apellido, fecha_nacimiento, profesion, genero, email } = request.body;
     //const fecha_nacimiento = fechaSQL.toISOString().split('T')[0];
@@ -41,7 +43,7 @@ router.post('/modificar/:id', async(request, response) => {
 });
 
 // Endpoint para agregar un profesor
-router.post('/agregar', async(request, response) => {
+router.post('/agregar', isLoggedIn, async(request, response) => {
     
     const { idprofesor, nombre, apellido, fecha_nacimiento, profesion, genero, email } = request.body;
     //const fecha_nacimiento = fechaSQL.toISOString().split('T')[0];
@@ -54,7 +56,7 @@ router.post('/agregar', async(request, response) => {
 });
 
 // Endpoint que permite eliminar una carrera
-router.get('/eliminar/:idprofesor', async(request, response) => {
+router.get('/eliminar/:idprofesor', isLoggedIn, async(request, response) => {
     // Desestructuramos el objeto que nos mandan en la peticion y extraemos el idcarrera
     const { idprofesor } = request.params;
     const resultado = await queries.eliminarProfesor(idprofesor);

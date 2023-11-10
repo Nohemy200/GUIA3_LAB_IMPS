@@ -1,6 +1,32 @@
 // Este archivo sera utilizado para configurar todas las rutas principales del sistema
 const express = require('express');
 const router = express.Router();
+
+const estudianteRepository = require('../repositories/EstudianteRepository');
+
+const carreraRepository = require('../repositories/CarreraRepository');
+
+const GrupoRepository = require('../repositories/GrupoRepository');
+
+const MateriaRepository = require('../repositories/MateriaRepository');
+
+const ProfesorRepository = require('../repositories/ProfesorRepository');
+
+const { isLoggedIn } = require('../lib/auth');
+
+
+// Configuracion de ruta inicial de la aplicacion
+router.get('/', isLoggedIn, async (request,response) => {
+    response.render('home/home');
+});
+
+
+module.exports = router;
+
+/*
+// Este archivo sera utilizado para configurar todas las rutas principales del sistema
+const express = require('express');
+const router = express.Router();
 const estudianteRepository = require('../repositories/EstudianteRepository');
 const grupoRepository = require('../repositories/GrupoRepository');
 const materiaRepository = require('../repositories/MateriaRepository'); // Agregado
@@ -65,11 +91,5 @@ router.get('/grupos/eliminar/:idgrupo', async (request, response) => {
     }
     response.redirect('/grupos');
 });
-
-// Obtener todas las materias
-
-
-
-module.exports = router;
-
+*/
 
